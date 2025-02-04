@@ -123,7 +123,7 @@ int main(int argc, char *argv[])
         value.val2 = stof(data);
         dataObject.Add(value);
     }
-    file.close;
+    file.close();
 
     file.open(argv[2]);
     string action;
@@ -150,7 +150,7 @@ int main(int argc, char *argv[])
 
             dataObject.Add(value);
         }
-        esle if (action == "search")
+        else if (action == "search")
         {
             getline(file, data);
             dataObject.LookUp(data);
@@ -161,7 +161,7 @@ int main(int argc, char *argv[])
             dataObject.Delete(data);
         }
     }
-    file.close;
+    file.close();
 
     return  0;
 }
