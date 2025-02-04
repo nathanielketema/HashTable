@@ -1,0 +1,5 @@
+add,abcabcab,10.2,9.8,blue,2,3
+add,abcab,19.2,8.8,pink,1,7
+add,hi,0.2,0.8,black,6,3
+search,abcab
+remove,abcabcab
