@@ -23,6 +23,7 @@ class Data
         void Add(Value record);
         void Delete(string key);
         void LookUp(string key);
+        void numberOfKey();
     private:
         int size;
         vector<Value> seqData;
@@ -104,6 +105,11 @@ Value Data::seqLookUp(string key)
     return {};
 }
 
+void Data::numberOfKey()
+{
+    cout << "Total key entry: " << seqData.size() << endl;
+}
+
 /*
 int Data::hashFunction(int key)
 {
@@ -154,6 +160,7 @@ int main(int argc, char *argv[])
         dataObject.Add(value);
     }
     file.close();
+    dataObject.numberOfKey();
 
     file.open(argv[2]);
     string action;
