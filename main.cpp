@@ -3,7 +3,6 @@
 #include <string>
 #include <list>
 #include <vector>
-#include <optional>
 using namespace std;
 
 struct Value
@@ -70,6 +69,15 @@ void Data::LookUp(string key)
 // private
 void Data::seqAdd(Value record)
 {
+    for (int i = 0; i < seqData.size(); i++)
+    {
+        if (seqData[i].key == record.key)
+        {
+            seqData[i] = record;
+            return;
+        }
+    }
+
     seqData.push_back(record);
 }
 
