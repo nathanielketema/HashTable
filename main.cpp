@@ -153,12 +153,12 @@ int main(int argc, char *argv[])
         else if (action == "search")
         {
             getline(file, data);
-            dataObject.LookUp(data);
+            //dataObject.LookUp(data);
         }
         else if (action == "remove")
         {
             getline(file, data);
-            dataObject.Delete(data);
+            //dataObject.Delete(data);
         }
     }
     file.close();
