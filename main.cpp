@@ -132,7 +132,7 @@ int main(int argc, char *argv[])
 {
     ifstream file;
 
-    if (argc != 3)
+    if (argc < 2)
     {
         cout << "Error: file not provided!" << endl;
         return 1;
@@ -162,43 +162,46 @@ int main(int argc, char *argv[])
     file.close();
     dataObject.numberOfKey();
 
-    file.open(argv[2]);
-    string action;
-    while(getline(file, action, ','))
+    if (argc == 3)
     {
-        if (action == "add")
+        file.open(argv[2]);
+        string action;
+        while(getline(file, action, ','))
         {
-            getline(file, data, ',');
-            value.key = data;
+            if (action == "add")
+            {
+                getline(file, data, ',');
+                value.key = data;
 
-            getline(file, data, ',');
-            value.gridx = stoi(data);
+                getline(file, data, ',');
+                value.gridx = stoi(data);
 
-            getline(file, data, ',');
-            value.gridy = stoi(data);
+                getline(file, data, ',');
+                value.gridy = stoi(data);
 
-            getline(file, value.color, ',');
+                getline(file, value.color, ',');
 
-            getline(file, data, ',');
-            value.val1 = stoi(data);
+                getline(file, data, ',');
+                value.val1 = stoi(data);
 
-            getline(file, data);
-            value.val2 = stof(data);
+                getline(file, data);
+                value.val2 = stof(data);
 
-            dataObject.Add(value);
+                dataObject.Add(value);
+            }
+            else if (action == "search")
+            {
+                getline(file, data);
+                dataObject.LookUp(data);
+            }
+            else if (action == "remove")
+            {
+                getline(file, data);
+                dataObject.Delete(data);
+            }
         }
-        else if (action == "search")
-        {
-            getline(file, data);
-            dataObject.LookUp(data);
-        }
-        else if (action == "remove")
-        {
-            getline(file, data);
-            dataObject.Delete(data);
-        }
+        file.close();
     }
-    file.close();
 
     return  0;
 }
