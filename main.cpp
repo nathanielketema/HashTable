@@ -37,9 +37,17 @@ class Data
         Value hashLookUp(string key);
 };
 
-Data::Data() { size = 100; }
+Data::Data() 
+{
+    size = 100;
+    hashTable.resize(size);
+}
 
-Data::Data(int sizeIn) { size = sizeIn; }
+Data::Data(int sizeIn) 
+{ 
+    size = sizeIn; 
+    hashTable.resize(size);
+}
 
 // public
 void Data::Add(Value record)
