@@ -27,33 +27,46 @@ class Data
     private:
         int size;
         vector<Value> seqData;
-        int hashFunction(int key);
+        vector< list<Value> > hashTable;
+        int hashFunction(string key);
         void seqAdd(Value record);
         void hashAdd(Value record);
         void seqDelete(string key);
         void hashDelete(string key);
         Value seqLookUp(string key);
         Value hashLookUp(string key);
+        void seqNumberOfKey();
+        void hashNumberOfKey();
 };
 
-Data::Data() { size = 100; }
+Data::Data() 
+{
+    size = 100;
+    hashTable.resize(size);
+}
 
-Data::Data(int sizeIn) { size = sizeIn; }
+Data::Data(int sizeIn) 
+{ 
+    size = sizeIn; 
+    hashTable.resize(size);
+}
 
 // public
 void Data::Add(Value record)
 {
-    seqAdd(record);
+    // seqAdd(record);
+    hashAdd(record);
 }
 
 void Data::Delete(string key)
 {
-    seqDelete(key);
+    // seqDelete(key);
+    hashDelete(key);
 }
 
 void Data::LookUp(string key)
 {
-    Value record = seqLookUp(key);
+    Value record = hashLookUp(key);
     if (!record.key.empty())
     {
         cout << "Key (" << key <<") found!" << endl;
@@ -65,6 +78,12 @@ void Data::LookUp(string key)
     }
     else
         cout << "Key (" << key <<") not found!" << endl;
+}
+
+void Data::numberOfKey()
+{
+    // seqNumberOfKey();
+    hashNumberOfKey();
 }
 
 // private
@@ -105,28 +124,75 @@ Value Data::seqLookUp(string key)
     return {};
 }
 
-void Data::numberOfKey()
-{
-    cout << "Total key entry: " << seqData.size() << endl;
-}
 
-/*
-int Data::hashFunction(int key)
+int Data::hashFunction(string key)
 {
+    int hash = 0;
+    int len = key.length();
+
+    for (int i = 0; i < len; i++)
+        hash = (31 * hash + key[i]) % size;
+
+    return hash;
 }
 
 void Data::hashAdd(Value record)
 {
+    int index = hashFunction(record.key);
+    for (auto it = hashTable[index].begin(); it != hashTable[index].end(); ++it)
+    {
+        if (it->key == record.key)
+        {
+            *it = record;
+            return;
+        }
+    }
+
+    hashTable[index].push_back(record);
 }
 
 void Data::hashDelete(string key)
 {
+    int index = hashFunction(key);
+    for (auto it = hashTable[index].begin(); it != hashTable[index].end();)
+    {
+        if (it->key == key)
+            it = hashTable[index].erase(it);
+        else
+            it++;
+    }
 }
 
 Value Data::hashLookUp(string key)
 {
+    int index = hashFunction(key);
+    for (auto it = hashTable[index].begin(); it != hashTable[index].end(); ++it)
+    {
+        if (it->key == key)
+            return *it;
+    }
+
+    return {};  
 }
-*/
+
+void Data::seqNumberOfKey()
+{
+    int total;
+
+    total = seqData.size();
+    cout << "Total key entry: " << total << endl;
+}
+
+void Data::hashNumberOfKey()
+{
+    int total = 0;
+    for (int i = 0; i < hashTable.size(); i++)
+    {
+        total += hashTable[i].size();
+    }
+
+    cout << "Total key entry: " << total << endl;
+}
 
 int main(int argc, char *argv[])
 {
@@ -162,6 +228,7 @@ int main(int argc, char *argv[])
     file.close();
     dataObject.numberOfKey();
 
+    // Action file if provided
     if (argc == 3)
     {
         file.open(argv[2]);
