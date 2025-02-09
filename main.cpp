@@ -35,6 +35,8 @@ class Data
         void hashDelete(string key);
         Value seqLookUp(string key);
         Value hashLookUp(string key);
+        void seqNumberOfKey();
+        void hashNumberOfKey();
 };
 
 Data::Data() 
@@ -78,6 +80,12 @@ void Data::LookUp(string key)
         cout << "Key (" << key <<") not found!" << endl;
 }
 
+void Data::numberOfKey()
+{
+    // seqNumberOfKey();
+    hashNumberOfKey();
+}
+
 // private
 void Data::seqAdd(Value record)
 {
@@ -116,10 +124,6 @@ Value Data::seqLookUp(string key)
     return {};
 }
 
-void Data::numberOfKey()
-{
-    cout << "Total key entry: " << seqData.size() << endl;
-}
 
 int Data::hashFunction(string key)
 {
@@ -169,6 +173,25 @@ Value Data::hashLookUp(string key)
     }
 
     return {};  
+}
+
+void Data::seqNumberOfKey()
+{
+    int total;
+
+    total = seqData.size();
+    cout << "Total key entry: " << total << endl;
+}
+
+void Data::hashNumberOfKey()
+{
+    int total = 0;
+    for (int i = 0; i < hashTable.size(); i++)
+    {
+        total += hashTable[i].size();
+    }
+
+    cout << "Total key entry: " << total << endl;
 }
 
 int main(int argc, char *argv[])
