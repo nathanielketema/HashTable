@@ -27,7 +27,8 @@ class Data
     private:
         int size;
         vector<Value> seqData;
-        int hashFunction(int key);
+        vector< list<Value> > hashTable;
+        int hashFunction(string key);
         void seqAdd(Value record);
         void hashAdd(Value record);
         void seqDelete(string key);
@@ -43,17 +44,19 @@ Data::Data(int sizeIn) { size = sizeIn; }
 // public
 void Data::Add(Value record)
 {
-    seqAdd(record);
+    // seqAdd(record);
+    hashAdd(record);
 }
 
 void Data::Delete(string key)
 {
-    seqDelete(key);
+    // seqDelete(key);
+    hashDelete(key);
 }
 
 void Data::LookUp(string key)
 {
-    Value record = seqLookUp(key);
+    Value record = hashLookUp(key);
     if (!record.key.empty())
     {
         cout << "Key (" << key <<") found!" << endl;
@@ -110,23 +113,55 @@ void Data::numberOfKey()
     cout << "Total key entry: " << seqData.size() << endl;
 }
 
-/*
-int Data::hashFunction(int key)
+int Data::hashFunction(string key)
 {
+    int hash = 0;
+    int len = key.length();
+
+    for (int i = 0; i < len; i++)
+        hash = (31 * hash + key[i]) % size;
+
+    return hash;
 }
 
 void Data::hashAdd(Value record)
 {
+    int index = hashFunction(record.key);
+    for (auto it = hashTable[index].begin(); it != hashTable[index].end(); ++it)
+    {
+        if (it->key == record.key)
+        {
+            *it = record;
+            return;
+        }
+    }
+
+    hashTable[index].push_back(record);
 }
 
 void Data::hashDelete(string key)
 {
+    int index = hashFunction(key);
+    for (auto it = hashTable[index].begin(); it != hashTable[index].end();)
+    {
+        if (it->key == key)
+            it = hashTable[index].erase(it);
+        else
+            it++;
+    }
 }
 
 Value Data::hashLookUp(string key)
 {
+    int index = hashFunction(key);
+    for (auto it = hashTable[index].begin(); it != hashTable[index].end(); ++it)
+    {
+        if (it->key == key)
+            return *it;
+    }
+
+    return {};  
 }
-*/
 
 int main(int argc, char *argv[])
 {
