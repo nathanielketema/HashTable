@@ -162,6 +162,7 @@ int main(int argc, char *argv[])
     file.close();
     dataObject.numberOfKey();
 
+    // Action file if provided
     if (argc == 3)
     {
         file.open(argv[2]);
