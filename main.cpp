@@ -238,7 +238,8 @@ int main(int argc, char *argv[])
     {
         file.open(argv[2]);
         string action;
-        while(getline(file, action, ' '))
+      
+        while(getline(file, action))
         {
             if (action == "add")
             {
