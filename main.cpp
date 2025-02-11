@@ -157,10 +157,15 @@ void Data::hashDelete(string key)
     for (auto it = hashTable[index].begin(); it != hashTable[index].end();)
     {
         if (it->key == key)
+        {
             it = hashTable[index].erase(it);
-        else
+            cout << "Removed Key (" << key << ")" << endl;
+            return;
+        } else {
             it++;
+        }       
     }
+    cout << "Key (" << key << ") not found" << endl;
 }
 
 Value Data::hashLookUp(string key)
@@ -233,6 +238,7 @@ int main(int argc, char *argv[])
     {
         file.open(argv[2]);
         string action;
+      
         while(getline(file, action))
         {
             if (action == "add")
@@ -256,18 +262,19 @@ int main(int argc, char *argv[])
 
                 dataObject.Add(value);
             }
-            else if (action == "search")
+            else if (action == "lookup")
             {
                 getline(file, data);
                 dataObject.LookUp(data);
             }
-            else if (action == "remove")
+            else if (action == "delete")
             {
                 getline(file, data);
                 dataObject.Delete(data);
             }
         }
         file.close();
+        dataObject.numberOfKey();
     }
 
     return  0;
