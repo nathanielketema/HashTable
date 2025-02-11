@@ -231,7 +231,6 @@ int main(int argc, char *argv[])
         dataObject.Add(value);
     }
     file.close();
-    dataObject.numberOfKey();
 
     // Action file if provided
     if (argc == 3)
@@ -239,7 +238,7 @@ int main(int argc, char *argv[])
         file.open(argv[2]);
         string action;
       
-        while(getline(file, action))
+        while(getline(file, action, ' '))
         {
             if (action == "add")
             {
@@ -274,8 +273,9 @@ int main(int argc, char *argv[])
             }
         }
         file.close();
-        dataObject.numberOfKey();
     }
+
+    dataObject.numberOfKey();
 
     return  0;
 }
