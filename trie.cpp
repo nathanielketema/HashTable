@@ -5,17 +5,6 @@
 #include <vector>
 using namespace std;
 
-struct trieNode {
-    trieNode* child[26];
-    bool endKey;
-    Value* record;
-    trieNode(){
-        for (int i=0;i<26;i++){
-            child[i]=NULL;
-        }
-    }
-};
-
 
 struct Value
 {
@@ -27,19 +16,30 @@ struct Value
     float val2;
 };
 
+struct trieNode {
+    trieNode* child[26];
+    bool endKey;
+    Value* record;
+    trieNode(){
+        for (int i=0;i<26;i++){
+            child[i]=NULL;
+        }
+    }
+};
+
 class Data
 {
     public:
         Data();
         Data(int sizeIn);
-        void Add(Value record);
+        void Add(Value* record);
         void Delete(string key);
         void LookUp(string key);
         void numberOfKey();
     private:
         int keyCount;
         trieNode* trieTable = new trieNode();
-        void trieAdd(Value record);
+        void trieAdd(Value* record);
         void trieDelete(string key);
         Value trieLookUp(string key);
         void trieNumberOfKey();
@@ -53,7 +53,7 @@ Data::Data()
 }
 
 // public
-void Data::Add(Value record)
+void Data::Add(Value* record)
 {
     // seqAdd(record);
     trieAdd(record);
@@ -88,34 +88,68 @@ void Data::numberOfKey()
 }
 
 // private
-void Data::trieAdd(Value record)
+void Data::trieAdd(Value* record)
 {
     trieNode* current = trieTable;
-    
-    for (char c : record.key){
-        if (current->child[c-'a']==NULL){
+    for (char c : record->key){
+        if (current->child[c-'a']==nullptr){
             trieNode* newNode = new trieNode();
-            current->child[c-'a']==newNode;
+            current->child[c-'a']=newNode;
         }
         current=current->child[c-'a'];
     }
-    current->endKey=true;
-    current->record=&record;
+    if (current->endKey==true){
+        current->record=record;
+    } else {
+        current->record=record;
+        keyCount++;
+        current->endKey=true;
+    }
+    
 }
 
 void Data::trieDelete(string key)
 {
-
+    trieNode* current = trieTable;
+    int i=0;
+    for (char c : key){
+        if (current->child[c-'a']==nullptr){
+            cout << "Key ("<< key << ") not found in list" << endl;
+            return;
+        }
+        current=current->child[c-'a'];
+    }
+    if (current->endKey==false){
+        cout << "Key ("<< key << ") not found in list" << endl;
+    } else {
+        cout << "Key (" << key << ") removed from list" << endl;
+        current->endKey=false;
+        current->record=NULL;
+        keyCount--;
+    }
 }
 
 Value Data::trieLookUp(string key)
 {
+    trieNode* current = trieTable;
+    for (char c : key){
+        if (current->child[c-'a']==nullptr){
+            return {};
+        }
+        current=current->child[c-'a'];
+    }
+    if (current->endKey==true){
+        return *current->record;
+    } else {
+        return {};
+    }
+
 
 }
 
 void Data::trieNumberOfKey()
 {
-    
+    cout << "Total key entry: " << keyCount << endl;
 }
 
 int main(int argc, char *argv[])
@@ -147,7 +181,7 @@ int main(int argc, char *argv[])
 
         getline(file, data);
         value.val2 = stof(data);
-        dataObject.Add(value);
+        dataObject.Add(&value);
     }
     file.close();
     dataObject.numberOfKey();
@@ -158,7 +192,7 @@ int main(int argc, char *argv[])
         file.open(argv[2]);
         string action;
       
-        while(getline(file, action))
+        while(getline(file, action, ' '))
         {
             if (action == "add")
             {
@@ -179,7 +213,7 @@ int main(int argc, char *argv[])
                 getline(file, data);
                 value.val2 = stof(data);
 
-                dataObject.Add(value);
+                dataObject.Add(&value);
             }
             else if (action == "lookup")
             {
