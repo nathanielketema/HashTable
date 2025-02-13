@@ -41,32 +41,32 @@ class Data
 
 Data::Data() 
 {
-    size = 100;
-    hashTable.resize(size);
+    size = 0;
+    //hashTable.resize(size);
 }
 
-Data::Data(int sizeIn) 
+Data::Data(int sizeIn)
 { 
-    size = sizeIn; 
+    size = sizeIn;
     hashTable.resize(size);
 }
 
 // public
 void Data::Add(Value record)
 {
-    // seqAdd(record);
-    hashAdd(record);
+    seqAdd(record);
+    //hashAdd(record);
 }
 
 void Data::Delete(string key)
 {
-    // seqDelete(key);
-    hashDelete(key);
+    seqDelete(key);
+    //hashDelete(key);
 }
 
 void Data::LookUp(string key)
 {
-    Value record = hashLookUp(key);
+    Value record = seqLookUp(key);
     if (!record.key.empty())
     {
         cout << "Key (" << key <<") found!" << endl;
@@ -82,18 +82,18 @@ void Data::LookUp(string key)
 
 void Data::numberOfKey()
 {
-    // seqNumberOfKey();
-    hashNumberOfKey();
+    seqNumberOfKey();
+    //hashNumberOfKey();
 }
 
 // private
 void Data::seqAdd(Value record)
 {
-    for (int i = 0; i < seqData.size(); i++)
+    for (auto it = seqData.begin(); it != seqData.end(); it++ ) 
     {
-        if (seqData[i].key == record.key)
+        if (it->key == record.key)
         {
-            seqData[i] = record;
+            *it = record;
             return;
         }
     }
