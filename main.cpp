@@ -41,8 +41,8 @@ class Data
 
 Data::Data() 
 {
-    size = 0;
-    //hashTable.resize(size);
+    size = 1000;
+    hashTable.resize(size);
 }
 
 Data::Data(int sizeIn)
@@ -67,6 +67,7 @@ void Data::Delete(string key)
 void Data::LookUp(string key)
 {
     Value record = seqLookUp(key);
+    // Value record = hashLookUp(key);
     if (!record.key.empty())
     {
         cout << "Key (" << key <<") found!" << endl;
