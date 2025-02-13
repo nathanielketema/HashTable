@@ -133,7 +133,6 @@ void Data::trieDelete(string key)
 Value Data::trieLookUp(string key)
 {
     trieNode* current = trieTable;
-    cout << key << endl;
     for (char c : key){
         if (current->child[c-'a']==nullptr){
             return {};
