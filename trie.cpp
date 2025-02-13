@@ -1,8 +1,6 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-#include <list>
-#include <vector>
 using namespace std;
 
 
@@ -20,8 +18,8 @@ struct trieNode {
     trieNode* child[26];
     bool endKey;
     Value* record;
-    trieNode() : endKey(false), record(nullptr) {
-        for (int i=0;i<26;i++){
+    trieNode() : endKey(false), record(nullptr) { //constructor for the function
+        for (int i=0;i<26;i++){                   //everytime it makes a new trieNode, this code happens
             child[i]=nullptr;
         }
     }
@@ -38,7 +36,7 @@ class Data
         void numberOfKey();
     private:
         int keyCount;
-        trieNode* trieTable = new trieNode();
+        trieNode* trieTable;
         void trieAdd(Value* record);
         void trieDelete(string key);
         Value trieLookUp(string key);
@@ -49,19 +47,18 @@ class Data
 //constructor
 Data::Data() 
 {
-
+    keyCount=0;
+    trieTable = new trieNode();
 }
 
 // public
 void Data::Add(Value* record)
 {
-    // seqAdd(record);
     trieAdd(record);
 }
 
 void Data::Delete(string key)
 {
-    // seqDelete(key);
     trieDelete(key);
 }
 
@@ -83,7 +80,6 @@ void Data::LookUp(string key)
 
 void Data::numberOfKey()
 {
-    // seqNumberOfKey();
     trieNumberOfKey();
 }
 
@@ -92,13 +88,13 @@ void Data::trieAdd(Value* record)
 {
     trieNode* current = trieTable;
     for (char c : record->key){
-        if (current->child[c-'a']==nullptr){
+        if (current->child[c-'a']==nullptr){ //"c" is the character, - 'a' gets you the askii values.
             trieNode* newNode = new trieNode();
             current->child[c-'a']=newNode;
         }
         current=current->child[c-'a'];
     }
-    if (current->endKey==true){
+    if (current->endKey==true){ //if a record already exists
         current->record=record;
     } else {
         current->record=record;
