@@ -20,7 +20,7 @@ struct trieNode {
     trieNode* child[26];
     bool endKey;
     Value* record;
-    trieNode(){
+    trieNode() : endKey(false), record(nullptr) {
         for (int i=0;i<26;i++){
             child[i]=nullptr;
         }
