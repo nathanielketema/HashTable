@@ -22,7 +22,7 @@ struct trieNode {
     Value* record;
     trieNode(){
         for (int i=0;i<26;i++){
-            child[i]=NULL;
+            child[i]=nullptr;
         }
     }
 };
@@ -124,7 +124,8 @@ void Data::trieDelete(string key)
     } else {
         cout << "Key (" << key << ") removed from list" << endl;
         current->endKey=false;
-        current->record=NULL;
+        delete current->record;
+        current->record=nullptr;
         keyCount--;
     }
 }
@@ -132,6 +133,7 @@ void Data::trieDelete(string key)
 Value Data::trieLookUp(string key)
 {
     trieNode* current = trieTable;
+    cout << key << endl;
     for (char c : key){
         if (current->child[c-'a']==nullptr){
             return {};
@@ -164,24 +166,26 @@ int main(int argc, char *argv[])
     file.open(argv[1]);
 
     Data dataObject;
-    Value value;
+    string key;
     string data;
-    while(getline(file, value.key, ','))
+    while(getline(file, key, ','))
     {
+        Value* newValue = new Value();
+        newValue->key=key;
         getline(file, data, ',');
-        value.gridx = stoi(data);
+        newValue->gridx = stoi(data);
 
         getline(file, data, ',');
-        value.gridy = stoi(data);
+        newValue->gridy = stoi(data);
 
-        getline(file, value.color, ',');
+        getline(file, newValue->color, ',');
 
         getline(file, data, ',');
-        value.val1 = stoi(data);
+        newValue->val1 = stoi(data);
 
         getline(file, data);
-        value.val2 = stof(data);
-        dataObject.Add(&value);
+        newValue->val2 = stof(data);
+        dataObject.Add(newValue);
     }
     file.close();
     dataObject.numberOfKey();
@@ -194,26 +198,27 @@ int main(int argc, char *argv[])
       
         while(getline(file, action, ' '))
         {
+            Value* newValue = new Value();
             if (action == "add")
             {
                 getline(file, data, ',');
-                value.key = data;
+                newValue->key = data;
 
                 getline(file, data, ',');
-                value.gridx = stoi(data);
+                newValue->gridx = stoi(data);
 
                 getline(file, data, ',');
-                value.gridy = stoi(data);
+                newValue->gridy = stoi(data);
 
-                getline(file, value.color, ',');
+                getline(file, newValue->color, ',');
 
                 getline(file, data, ',');
-                value.val1 = stoi(data);
+                newValue->val1 = stoi(data);
 
                 getline(file, data);
-                value.val2 = stof(data);
+                newValue->val2 = stof(data);
 
-                dataObject.Add(&value);
+                dataObject.Add(newValue);
             }
             else if (action == "lookup")
             {
