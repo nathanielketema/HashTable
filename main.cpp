@@ -42,6 +42,7 @@ class Data
 Data::Data() 
 {
     size = 5000;
+
     hashTable.resize(size);
 }
 
@@ -68,6 +69,7 @@ void Data::LookUp(string key)
 {
     Value record = hashLookUp(key);
     //Value record = seqLookUp(key);
+
     if (!record.key.empty())
     {
         cout << "Key (" << key <<") found!" << endl;
