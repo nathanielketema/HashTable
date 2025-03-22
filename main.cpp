@@ -67,7 +67,7 @@ void Data::Delete(string key)
 void Data::LookUp(string key)
 {
     Value record = hashLookUp(key);
-    //Value record = seqLookUp(key);
+    Value record = seqLookUp(key);
     if (!record.key.empty())
     {
         cout << "Key (" << key <<") found!" << endl;

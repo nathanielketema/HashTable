@@ -183,7 +183,6 @@ int main(int argc, char *argv[])
         dataObject.Add(newValue);
     }
     file.close();
-    dataObject.numberOfKey();
 
     // Action file if provided
     if (argc == 3)
