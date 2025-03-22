@@ -42,6 +42,7 @@ class Data
 Data::Data() 
 {
     size = 5000;
+
     hashTable.resize(size);
 }
 
